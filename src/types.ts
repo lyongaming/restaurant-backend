@@ -9,4 +9,6 @@ export type Client = User & {
     password: string;
 }
 
-export type ClientRegister = Omit<Client, "id">;
+export type ClientRegister = Omit<Client, "id"> & {
+    password2: string
+}
