@@ -1,14 +1,25 @@
 export interface User {
     id: string,
-    name: string,
+    fname: string,
+    lname: string,
+    address: string,
     phone: string,
-    address: string
+    pass: string,
+    email: string
 }
 
-export type Client = User & {
-    password: string;
+export type UserRegister = Omit<User & {
+    confirmPass: string
+}, "id">
+
+export type UserLogin = Pick<User, "email" | "pass">;
+
+export enum Role {
+    employee = "employee",
+    admin = "admin"
 }
 
-export type ClientRegister = Omit<Client, "id"> & {
-    password2: string
+export type Employee = User & {
+    role: Role,
+    position: string
 }

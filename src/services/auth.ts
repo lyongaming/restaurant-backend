@@ -1,5 +1,9 @@
-import { ClientRegister } from "../types";
+import { UserLogin, UserRegister } from "../types";
 
-export const register = (client: ClientRegister) => {
-    console.log(client);
+export const register = (newUser: UserRegister) => {
+    console.log(newUser);
+}
+
+export const login = (user : UserLogin) => {
+    console.log(user);
 }

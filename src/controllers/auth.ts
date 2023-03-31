@@ -1,10 +1,15 @@
 import { Request, Response } from "express";
 
-import { register } from "../services/auth";
+import { login, register } from "../services/auth";
 
-import { ClientRegister } from "../types";
+import { UserLogin, UserRegister } from "../types";
 
-export const signupController = (req : Request<ClientRegister>, _res : Response) => {
-    const newUser : ClientRegister = req.body;
+export const signupController = (req : Request<UserRegister>, _res : Response) => {
+    const newUser : UserRegister = req.body;
     register(newUser);
+}
+
+export const signinController = (req : Request<UserLogin>, _res : Response) => {
+    const user : UserLogin = req.body;
+    login(user);
 }
