@@ -1,12 +1,17 @@
+import { PrismaClient } from "@prisma/client";
+
 import { comparePass, hashPassword } from "../helpers/auth";
 import { UserLogin, UserRegister } from "../types";
 
+const prisma = new PrismaClient();
+
 export const register = async(newUser: UserRegister) => {
-    const { pass, confirmPass } = newUser;
-    if (comparePass(pass, confirmPass)) {
+    const { password, confirmPass } = newUser;
+    if (comparePass(password, confirmPass)) {
         const { confirmPass, ...user } = newUser;
-        user.pass = await hashPassword(user.pass);
-        console.log(user.pass);
+        user.password = await hashPassword(user.password);
+        const client = await prisma.clients.create({ data: user });
+        console.log(client);
     }
 }
 
