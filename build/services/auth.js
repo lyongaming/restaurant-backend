@@ -21,17 +21,23 @@ var __rest = (this && this.__rest) || function (s, e) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.login = exports.register = void 0;
+const client_1 = require("@prisma/client");
 const auth_1 = require("../helpers/auth");
+const prisma = new client_1.PrismaClient();
 const register = (newUser) => __awaiter(void 0, void 0, void 0, function* () {
-    const { pass, confirmPass } = newUser;
-    if ((0, auth_1.comparePass)(pass, confirmPass)) {
+    const { password, confirmPass } = newUser;
+    if ((0, auth_1.confirmPassword)(password, confirmPass)) {
         const { confirmPass } = newUser, user = __rest(newUser, ["confirmPass"]);
-        user.pass = yield (0, auth_1.hashPassword)(user.pass);
-        console.log(user.pass);
+        user.password = yield (0, auth_1.hashPassword)(user.password);
+        const client = yield prisma.clients.create({ data: user });
+        console.log(client);
     }
 });
 exports.register = register;
-const login = (user) => {
-    console.log(user);
-};
+const login = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
+    const user = yield prisma.clients.findFirst({ where: { email } });
+    if (user) {
+        console.log((0, auth_1.comparePassword)(password, user.password));
+    }
+});
 exports.login = login;
