@@ -30,14 +30,18 @@ const register = (newUser) => __awaiter(void 0, void 0, void 0, function* () {
         const { confirmPass } = newUser, user = __rest(newUser, ["confirmPass"]);
         user.password = yield (0, auth_1.hashPassword)(user.password);
         const client = yield prisma.clients.create({ data: user });
-        console.log(client);
+        const { email, password } = client, userData = __rest(client, ["email", "password"]);
+        return userData;
     }
+    return undefined;
 });
 exports.register = register;
 const login = ({ email, password }) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield prisma.clients.findFirst({ where: { email } });
-    if (user) {
-        console.log((0, auth_1.comparePassword)(password, user.password));
+    if (user && (yield (0, auth_1.comparePassword)(password, user.password))) {
+        const { email, password } = user, userData = __rest(user, ["email", "password"]);
+        return userData;
     }
+    return undefined;
 });
 exports.login = login;
